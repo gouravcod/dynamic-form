@@ -13,7 +13,7 @@ import {
   import { UsersService } from './users.service';
   import { CreateUserDto } from './dto/create-user.dto';
   import { UpdateUserDto } from './dto/update-user.dto';
-import { JwtAuthGuard } from './jwt-auth.guard';
+
   
   @Controller('dynamic-form')
   export class UsersController {
@@ -25,8 +25,6 @@ import { JwtAuthGuard } from './jwt-auth.guard';
       return this.usersService.create(dto);
     }
 
-   
-  
     @Get('getUser/:id')
     findOne(@Param('id', ParseIntPipe) id: number) {
       return this.usersService.findOne(id);
@@ -37,14 +35,21 @@ import { JwtAuthGuard } from './jwt-auth.guard';
       const idArray = ids
     .split(',')
     .map(id => parseInt(id))
-    
-  const users_array = this.usersService.findManyByIds(idArray);
-
-  return {
+     const users_array = this.usersService.findManyByIds(idArray);
+     console.log(users_array);
+     return {
     message: 'Users fetched successfully',
     data: users_array,
   };
 }
+
+@Get("getAllUsers")
+gettasks(){
+  return this.usersService.findAll();
+}
+
+
+
   
     @Put('updateUser/:id')
     update(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
@@ -64,11 +69,7 @@ import { JwtAuthGuard } from './jwt-auth.guard';
     }
 
 
-    @UseGuards(JwtAuthGuard)
-    @Get("getAllTasks")
-    gettasks(){
-      return this.usersService.findAll();
-    }
+  
 
 
     
